@@ -1,0 +1,16 @@
+.tracking-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+  
+.tracking-buttons {
+    display: flex;
+    margin: 25%;
+    width: 50%;
+    flex-direction: column;
+}
+
+.tracking-buttons IonButton {
+    margin-bottom: 10px; 
+}

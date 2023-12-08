@@ -1,0 +1,17 @@
+.Predictions-content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+  
+.prediction-card {
+    width: 99%;
+    margin: 4px;
+    margin-top: 20px;
+}
+
+ion-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
