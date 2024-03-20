@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonContent,
   IonPage,
@@ -61,9 +61,27 @@ const Questionnaire: React.FC = () => {
     );
   };
 
+  const [responses, setResponses] = useState<Question[]>([]);
+
+  useEffect(() => {
+    const savedResponses = localStorage.getItem('responses');
+    if (savedResponses) {
+      setResponses(JSON.parse(savedResponses));
+    }
+  }, []);
+
   const handleSubmit = () => {
-    // Logic to handle the submitted responses
-    console.log(questions);
+    // Convert the questions array to the format expected by your server
+    const data: Question[] = questions.map(question => ({
+      id: question.id,
+      question: question.question,
+      options: question.options,
+      response: question.response
+    }));
+
+    setResponses(data);
+
+    localStorage.setItem('responses', JSON.stringify(data));
   };
 
   return (
@@ -100,7 +118,17 @@ const Questionnaire: React.FC = () => {
           <IonButton expand="full" onClick={handleSubmit}>
             Submit Answers
           </IonButton>
-        </div>
+          </div>
+          {responses.length > 0 && (
+          <div>
+            <h2>Responses:</h2>
+            {responses.map((response) => (
+              <p key={response.id}>
+                Question {response.id}: {response.response}
+              </p>
+            ))}
+          </div>
+        )}
       </IonContent>
     </IonPage>
   );

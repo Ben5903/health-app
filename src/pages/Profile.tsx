@@ -13,41 +13,37 @@ import {
   IonButtons,
   IonMenuButton,
   IonTitle,
+  IonText,
 } from '@ionic/react';
 import './Profile.css';
 import { GetUserProfile } from '../components/userService';
 
 const Profile: React.FC = () => {
-  const [user, setUser] = useState({
-    firstname: 'Test',
-    surname: 'User',
-    username: 'TestUser',
-    email: 'TestUser@sample.com',
-    phone_number: '0811111111',
-    // Add more user data as needed
-  });
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Declare the loading state variable here
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        // Call  service method to get the user profile
-        const userProfile = await GetUserProfile(); 
+  const fetchUserProfile = async () => {
+    try {
+      const userProfile = await GetUserProfile();
+      setUser(userProfile);
+      console.log('User profile:', userProfile); // Log the user profile to the console
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+    }
+  };
 
-        // Update the state with the retrieved user profile
-        setUser(userProfile);
-      } catch (error) {
-        console.error('Failed to fetch user profile:', error);
-        // Handle error, show error message, etc.
-      }
-    };
-
-    fetchUserProfile();
-  }, []);
+  fetchUserProfile();
+}, []);
 
   const handleEditProfile = () => {
-    // Handle the edit profile action, e.g., navigate to an edit page or modal
     console.log('Edit Profile Clicked');
   };
+
+  if (loading) {
+    return <div>Loading...</div>;  // show a loading message while the user profile is being fetched
+  }
 
   return (
     <IonPage>
@@ -58,62 +54,29 @@ const Profile: React.FC = () => {
           </IonButtons>
           <IonTitle>View your profile below!</IonTitle>
         </IonToolbar>
-        <div>
-
-
-          {/* User Information */}
-          <IonGrid>
-            <IonRow>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonText color="medium">
+                <h2>Welcome, {(user as any) ? (user as any).firstname : ''}!</h2>
+                <p>We're glad to have you here. Here's your profile information:</p>
+              </IonText>
+            </IonCol>
+          </IonRow>
+          {['firstname', 'surname', 'username', 'email', 'phone_number'].map((field) => (
+            <IonRow key={field}>
               <IonCol>
                 <IonItem>
-                  <IonLabel>Firstname: </IonLabel>
-                  <IonInput value={user.firstname} readonly />
+                  <IonLabel>{field.charAt(0).toUpperCase() + field.slice(1)}: </IonLabel>
+                  <IonInput value={user ? user[field] : ''} readonly />
                 </IonItem>
               </IonCol>
             </IonRow>
-
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel>Surname: </IonLabel>
-                  <IonInput value={user.surname} readonly />
-                </IonItem>
-              </IonCol>
-            </IonRow>
-
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel>Username: </IonLabel>
-                  <IonInput value={user.username} readonly />
-                </IonItem>
-              </IonCol>
-            </IonRow>
-
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel>Email: </IonLabel>
-                  <IonInput value={user.email} readonly />
-                </IonItem>
-              </IonCol>
-            </IonRow>
-
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel>Phone Number: </IonLabel>
-                  <IonInput value={user.phone_number} readonly />
-                </IonItem>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-
-          {/* Edit Profile Button */}
-          <IonButton className='edit' expand="full" onClick={handleEditProfile}>
-            Edit Profile
-          </IonButton>
-        </div>
+          ))}
+        </IonGrid>
+        <IonButton className='edit' expand="full" onClick={handleEditProfile}>
+          Edit Profile
+        </IonButton>
       </IonContent>
     </IonPage>
   );

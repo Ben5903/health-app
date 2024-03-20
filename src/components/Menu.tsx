@@ -12,9 +12,8 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import {  bookmarkOutline, heartOutline, heartSharp, personCircleOutline, personCircleSharp, paperPlaneOutline, paperPlaneSharp, arrowForward, arrowForwardCircleOutline, arrowBackCircleOutline, arrowBackCircleSharp, help, helpCircle } from 'ionicons/icons';
+import {  bookmarkOutline, heartOutline, heartSharp, personCircleOutline, personCircleSharp, paperPlaneOutline, paperPlaneSharp, arrowForward, arrowForwardCircleOutline, arrowBackCircleOutline, arrowBackCircleSharp, help, helpCircle, albumsOutline, albumsSharp } from 'ionicons/icons';
 import { menuOutline } from 'ionicons/icons';
-import { isMobile } from 'mobile-device-detect'; 
 import './Menu.css';
 import { useEffect, useRef, useState } from 'react';
 
@@ -57,11 +56,18 @@ const appPages: AppPage[] = [
     mdIcon: arrowForwardCircleOutline
   },
   {
+    title: 'View Users',
+    url: '/ViewUsers',
+    iosIcon: albumsOutline,
+    mdIcon: albumsSharp
+  },
+  {
     title: 'Logout/Create Profile',
     url: '/Login',
     iosIcon: arrowBackCircleOutline,
     mdIcon: arrowBackCircleSharp
   }
+
 ];
 
 const labels = [' Pulse Rate', ' Body Temperature', ' Blood Pressure'];

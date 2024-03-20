@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
@@ -10,6 +10,8 @@ import Questionaire from "./pages/Questionaire";
 import Track from './pages/Track';
 import Suggestions from './pages/Suggestions';
 import Predicaments from './pages/Predicaments';
+import ViewUsers from './pages/ViewUsers';
+import axios from 'axios';
 
 
 
@@ -33,11 +35,18 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-
 setupIonicReact();
 
 const App: React.FC = () => {
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, []);
+
   return (
+    
     <Router>
       <IonApp>
         <IonReactRouter>
@@ -51,6 +60,7 @@ const App: React.FC = () => {
             <Route path="/Questionaire" component={Questionaire} exact />
             <Route path="/Login" component={Login} exact />
             <Route path="/Profile" component={Profile} exact />
+            <Route path="/ViewUsers" component={ViewUsers} exact />
             <Redirect exact from="/" to="/Login" />
             </IonRouterOutlet>
           </IonSplitPane>
