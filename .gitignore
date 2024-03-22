@@ -4,6 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
+/public
+/dist
+/cypress
+/.vscode/*
 
 # testing
 /coverage
@@ -20,6 +24,9 @@
 /.vscode/*
 !/.vscode/extensions.json
 .idea
+.browserlistrc
+.eslintrc.js
+.capacitor.config.ts
 
 npm-debug.log*
 yarn-debug.log*
