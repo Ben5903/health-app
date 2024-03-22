@@ -34,3 +34,13 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
+
+# Project configuration files
+.browserslistrc
+capacitor.config.ts
+cypress.config.ts
+ionic.config.json
+package-lock.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
