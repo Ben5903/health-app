@@ -240,3 +240,61 @@ html {
   https://ionicframework.com/docs/layout/dynamic-font-scaling */
   --ion-dynamic-font: var(--ion-default-dynamic-font);
 }
+
+
+.light {
+  --ion-background-color: #ffffff; /* light theme background color */
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary: #60ff38;
+  --ion-color-primary-tint: #5ffc93;
+  --ion-color-primary-shade: #2a8f02;
+}
+
+.dark {
+
+  --ion-background-color: #0d0e0f; /* dark theme background color */
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary: #3880ff;
+  --ion-color-primary-tint: #023672;
+  --ion-color-primary-shade: #012c6d;
+}
+
+.preset1 {
+  --ion-color-primary: #3880ff;
+  /* other preset 1 variables */
+}
+
+.preset2 {
+  --ion-color-primary: #ff3880;
+  /* other preset 2 variables */
+}
+
+.preset3 {
+  --ion-color-primary: #6cf741;
+  /* other preset 2 variables */
+}
+
+.preset4 {
+  --ion-color-primary: #2eebf1;
+  /* other preset 2 variables */
+}
+
+.preset5 {
+  --ion-color-primary: #0d09e9;
+  /* other preset 2 variables */
+}
+
+.preset6 {
+  --ion-color-primary: #f6fa04;
+  /* other preset 2 variables */
+}
+
+.preset7 {
+  --ion-color-primary: #f10a0a;
+  /* other preset 2 variables */
+}
+
+.preset8 {
+  --ion-color-primary: #fd16b0;
+  /* other preset 2 variables */
+}

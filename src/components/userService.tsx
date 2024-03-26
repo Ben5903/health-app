@@ -16,15 +16,18 @@ const AddUser = async (userData: any) => {
 
 const GetUserProfile = async () => {
   try {
-    // Make a request to get the user profile
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-    const response = await axios.get('http://127.0.0.1:8000/user/userprofiles'); // You need to implement this endpoint in Django
+    const token = localStorage.getItem('token');
+    console.log('Token:', token); // Log the token
 
-    // Return the user profile data
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const response = await axios.get('http://127.0.0.1:8000/user/userprofiles');
+
+    console.log('Response data:', response.data); // Log the response data
+
     return response.data;
   } catch (error) {
     console.error(error);
-    throw error; // Rethrow the error so the calling code can handle it
+    throw error;
   }
 };
 

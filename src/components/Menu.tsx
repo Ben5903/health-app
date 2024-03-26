@@ -1,5 +1,6 @@
 import {
   IonButton,
+  IonPopover,
   IonContent,
   IonIcon,
   IonItem,
@@ -10,12 +11,29 @@ import {
   IonMenuToggle,
   IonNote,
 } from '@ionic/react';
-
+import {
+  bookmarkOutline,
+  heartOutline,
+  heartSharp,
+  personCircleOutline,
+  personCircleSharp,
+  paperPlaneOutline,
+  paperPlaneSharp,
+  arrowForward,
+  arrowForwardCircleOutline,
+  arrowBackCircleOutline,
+  arrowBackCircleSharp,
+  help,
+  helpCircle,
+  albumsOutline,
+  albumsSharp,
+  menuOutline,
+  cogOutline,
+  cogSharp,
+} from 'ionicons/icons';
 import { useLocation } from 'react-router-dom';
-import {  bookmarkOutline, heartOutline, heartSharp, personCircleOutline, personCircleSharp, paperPlaneOutline, paperPlaneSharp, arrowForward, arrowForwardCircleOutline, arrowBackCircleOutline, arrowBackCircleSharp, help, helpCircle, albumsOutline, albumsSharp } from 'ionicons/icons';
-import { menuOutline } from 'ionicons/icons';
-import './Menu.css';
 import { useEffect, useRef, useState } from 'react';
+import './Menu.css';
 
 interface AppPage {
   url: string;
@@ -66,8 +84,13 @@ const appPages: AppPage[] = [
     url: '/Login',
     iosIcon: arrowBackCircleOutline,
     mdIcon: arrowBackCircleSharp
+  },
+  {
+    title: 'Settings',
+    url: '/settings',
+    iosIcon: cogOutline,
+    mdIcon: cogSharp
   }
-
 ];
 
 const labels = [' Pulse Rate', ' Body Temperature', ' Blood Pressure'];
@@ -75,7 +98,7 @@ const labels = [' Pulse Rate', ' Body Temperature', ' Blood Pressure'];
 const Menu: React.FC = () => {
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+  const [showPopover, setShowPopover] = useState({ isOpen: false, event: undefined });
   const menuToggleRef = useRef<HTMLIonMenuElement>(null);
 
   const toggleMenu = () => {
@@ -90,8 +113,6 @@ const Menu: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-
-    // Remove the event listener when the component unmounts
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -101,8 +122,8 @@ const Menu: React.FC = () => {
     <>
       {isMobile && (
         <div onClick={toggleMenu} className="menu-toggle-icon">
-        <IonIcon icon={menuOutline} />
-      </div>
+          <IonIcon icon={menuOutline} />
+        </div>
       )}
       <IonMenu contentId="main" type="overlay" ref={menuToggleRef}>
         <IonContent>
@@ -110,20 +131,21 @@ const Menu: React.FC = () => {
             <IonListHeader>Welcome!</IonListHeader>
             <IonNote>To your personal health assitant</IonNote>
             {
-            appPages.map((appPage, index) => (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem
-                  className={location.pathname === appPage.url ? 'selected' : ''}
-                  routerLink={appPage.url}
-                  routerDirection="none"
-                  lines="none"
-                  detail={false}
-                >
-                  <IonIcon aria-hidden="true" slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            ))}
+              appPages.map((appPage, index) => (
+                <IonMenuToggle key={index} autoHide={false}>
+                  <IonItem
+                    className={location.pathname === appPage.url ? 'selected' : ''}
+                    routerLink={appPage.url}
+                    routerDirection="none"
+                    lines="none"
+                    detail={false}
+                  >
+                    <IonIcon aria-hidden="true" slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                    <IonLabel>{appPage.title}</IonLabel>
+                  </IonItem>
+                </IonMenuToggle>
+              ))
+            }
           </IonList>
 
           <IonList id="labels-list">

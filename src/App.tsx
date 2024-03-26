@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
@@ -12,7 +12,8 @@ import Suggestions from './pages/Suggestions';
 import Predicaments from './pages/Predicaments';
 import ViewUsers from './pages/ViewUsers';
 import axios from 'axios';
-
+import Settings from './pages/Settings';
+import { ThemeContext } from './contexts/ThemeContext';
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -38,6 +39,9 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
+  const [theme, setTheme] = useState('dark');
+  const [colorPreset, setColorPreset] = useState('preset1');
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -46,27 +50,31 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    
-    <Router>
-      <IonApp>
-        <IonReactRouter>
-          <IonSplitPane contentId="main">
-            <Menu />
-            <IonRouterOutlet id="main">
-            <Route path="/Create" component={Create} exact/>
-            <Route path="/Suggestions" component={Suggestions} exact/>
-            <Route path="/Predicaments" component={Predicaments} exact/>
-            <Route path="/Track" component={Track} exact/>
-            <Route path="/Questionaire" component={Questionaire} exact />
-            <Route path="/Login" component={Login} exact />
-            <Route path="/Profile" component={Profile} exact />
-            <Route path="/ViewUsers" component={ViewUsers} exact />
-            <Redirect exact from="/" to="/Login" />
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </IonApp>
-    </Router>
+    <ThemeContext.Provider value={{ theme, setTheme, colorPreset, setColorPreset }}>
+      <div className={`${theme} ${colorPreset}`}>
+        <Router>
+          <IonApp>
+            <IonReactRouter>
+              <IonSplitPane contentId="main">
+                <Menu />
+                <IonRouterOutlet id="main">
+                  <Route path="/Create" component={Create} exact/>
+                  <Route path="/Suggestions" component={Suggestions} exact/>
+                  <Route path="/Predicaments" component={Predicaments} exact/>
+                  <Route path="/Track" component={Track} exact/>
+                  <Route path="/Questionaire" component={Questionaire} exact />
+                  <Route path="/Login" component={Login} exact />
+                  <Route path="/Profile" component={Profile} exact />
+                  <Route path="/ViewUsers" component={ViewUsers} exact />
+                  <Route path="/Settings" component={Settings} exact />
+                  <Redirect exact from="/" to="/Login" />
+                </IonRouterOutlet>
+              </IonSplitPane>
+            </IonReactRouter>
+          </IonApp>
+        </Router>
+      </div>
+    </ThemeContext.Provider>
   );
 };
 
