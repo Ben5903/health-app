@@ -1,3 +1,4 @@
+// Necessary imports
 import {
   IonButton,
   IonPopover,
@@ -35,6 +36,7 @@ import { useLocation } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import './Menu.css';
 
+// defining interface for app pages
 interface AppPage {
   url: string;
   iosIcon: string;
@@ -42,6 +44,7 @@ interface AppPage {
   title: string;
 }
 
+// Pages to be displayed in the menu
 const appPages: AppPage[] = [
   {
     title: 'Profile',
@@ -74,12 +77,6 @@ const appPages: AppPage[] = [
     mdIcon: arrowForwardCircleOutline
   },
   {
-    title: 'View Users',
-    url: '/ViewUsers',
-    iosIcon: albumsOutline,
-    mdIcon: albumsSharp
-  },
-  {
     title: 'Logout/Create Profile',
     url: '/Login',
     iosIcon: arrowBackCircleOutline,
@@ -93,12 +90,17 @@ const appPages: AppPage[] = [
   }
 ];
 
+// reminder labels
 const labels = [' Pulse Rate', ' Body Temperature', ' Blood Pressure'];
 
 const Menu: React.FC = () => {
+  // get the current location
   const location = useLocation();
+
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [showPopover, setShowPopover] = useState({ isOpen: false, event: undefined });
+
+  // ref for the menu element
   const menuToggleRef = useRef<HTMLIonMenuElement>(null);
 
   const toggleMenu = () => {
@@ -111,6 +113,7 @@ const Menu: React.FC = () => {
     setIsMobile(window.innerWidth <= 768);
   };
 
+  // hook to handle window resize
   useEffect(() => {
     window.addEventListener('resize', handleResize);
     return () => {
@@ -118,6 +121,7 @@ const Menu: React.FC = () => {
     };
   }, []);
 
+  // renders component
   return (
     <>
       {isMobile && (

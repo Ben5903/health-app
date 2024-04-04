@@ -23,16 +23,21 @@ const Profile: React.FC = () => {
   const [loading, setLoading] = useState(true); // Declare the loading state variable here
 
   useEffect(() => {
-  const fetchUserProfile = async () => {
-    try {
-      const userProfile = await GetUserProfile();
-      setUser(userProfile);
-      console.log('User profile:', userProfile); // Log the user profile to the console
-      setLoading(false);
-    } catch (error) {
-      console.error('Failed to fetch user profile:', error);
-    }
-  };
+    const fetchUserProfile = async () => {
+      try {
+        const token = localStorage.getItem('token'); 
+        if (!token) {
+          throw new Error('No token found');
+        }
+    
+        const userProfile = await GetUserProfile(token);
+        setUser(userProfile);
+        console.log('User profile:', userProfile); // Log the user profile to the console
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch user profile:', error);
+      }
+    };
 
   fetchUserProfile();
 }, []);
@@ -68,7 +73,7 @@ const Profile: React.FC = () => {
               <IonCol>
                 <IonItem>
                   <IonLabel>{field.charAt(0).toUpperCase() + field.slice(1)}: </IonLabel>
-                  <IonInput value={user ? user[field] : ''} readonly />
+                  <IonInput value={(user as any)[field]} readonly />
                 </IonItem>
               </IonCol>
             </IonRow>

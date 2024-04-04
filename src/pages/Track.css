@@ -20,9 +20,21 @@
     gap: 20px; 
 }
 
-.temperature-display {
+.current-display {
     font-size: 20px;
     font-weight: bold;
     color: #333;
 }
 
+
+@media (prefers-color-scheme: dark) {
+    .current-display {
+        color: #fff;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .current-display {
+        color: #333;
+    }
+}

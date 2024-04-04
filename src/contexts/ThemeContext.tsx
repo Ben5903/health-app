@@ -1,6 +1,7 @@
 import React from 'react';
 
 
+// Create a context for the theme (light/dark) and color preset (preset1/preset2)
 export const ThemeContext = React.createContext({
   theme: 'light',
   setTheme: (theme: string) => {},

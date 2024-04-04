@@ -2,18 +2,19 @@ import React, { useState, useContext } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonToggle, IonSelect, IonSelectOption } from '@ionic/react';
 import ThemeContext from '../contexts/ThemeContext';
 
+// Settings page
 const Settings: React.FC = () => {
     const [notificationsEnabled, setNotificationsEnabled] = useState(true);
     const { theme, setTheme, colorPreset, setColorPreset } = useContext(ThemeContext);
-  
+    // Add a state variable for the notificationsEnabled state
     const handleToggle = () => {
       setNotificationsEnabled(!notificationsEnabled);
     };
-  
+    // Add a function to handle the theme select event
     const handleThemeSelect = (event: CustomEvent) => {
       setTheme(event.detail.value);
     };
-  
+    // Add a function to handle the color preset select event
     const handleColorPresetSelect = (event: CustomEvent) => {
       setColorPreset(event.detail.value);
     };

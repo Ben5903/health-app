@@ -21,6 +21,7 @@ import './Create.css';
 const Create: React.FC = () => {
   const history = useHistory();
 
+  // state for user details
   const [user, setUser] = useState({
     firstname: '',
     surname: '',
@@ -30,24 +31,29 @@ const Create: React.FC = () => {
     password: '',
   });
 
+  // state for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  // function to validate email
   const isValidEmail = (email: string) => {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email.includes('@') && re.test(email);
   };
 
+  // function to validate phone number
   const isValidPhoneNumber = (phoneNumber: string) => {
     return phoneNumber.length === 10;
   };
 
+  // function to register user
   const registerUser = async () => {
     if (!user.firstname || !user.surname || !user.username || !user.email || !user.phone_number || !user.password) {
       setErrorMessage('All fields must be filled out');
       return;
     }
-
+    
+    // validate email and phone number
     if (!isValidEmail(user.email)) {
       setErrorMessage('Invalid email');
       return;
@@ -58,6 +64,7 @@ const Create: React.FC = () => {
       return;
     }
 
+    // call the AddUser function from userService.tsx
     try {
       await AddUser(user);
       history.push('/Profile');
@@ -66,6 +73,7 @@ const Create: React.FC = () => {
     }
   };
 
+  // return the JSX element
   return (
     <IonPage>
       <IonHeader>

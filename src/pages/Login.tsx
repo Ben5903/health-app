@@ -23,24 +23,28 @@ import axios from 'axios';
 
 const Login: React.FC = () => {
   const history = useHistory();
-
+  // declare state variables for username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  // declare state variable for alert
   const [showAlert, setShowAlert] = useState(false);
 
+  // useEffect hook to run code on component load
   useEffect(() => {
+    // Check if the user is already logged in
     localStorage.removeItem('token');
     localStorage.removeItem('responses');
     axios.defaults.headers.common['Authorization'] = undefined;
-    // Add any other cleanup logic here...
   }, []);
 
-
+  // function to handle login
   const handleLogin = async () => {
     console.log(`Logging in with username: ${username} and password: ${password}`);
     try {
+      // call the LoginUser function from userService.tsx
       const response = await LoginUser({ username, password });
+      console.log('Server response data:', response.data);
       // Check the success property of the response
       if (!response.data.success) {
         throw new Error(response.data.error);
@@ -49,18 +53,20 @@ const Login: React.FC = () => {
       const token = response.data.token;
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // navigate to the Profile page
       history.push('/Profile');
     } catch (error) {
+      // log the error to the console
       console.error('Login failed:', error);
       setShowAlert(true);
     }
   };
-
+  // function to navigate to the Create page
   const CreateButton = () => {
     console.log('Navigating to /Create');
     history.push('/Create');
   };
-
+  // return element
   return (
     <IonPage>
       <IonContent>
