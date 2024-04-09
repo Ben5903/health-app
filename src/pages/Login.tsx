@@ -26,6 +26,7 @@ const Login: React.FC = () => {
   // declare state variables for username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   // declare state variable for alert
   const [showAlert, setShowAlert] = useState(false);
@@ -34,38 +35,44 @@ const Login: React.FC = () => {
   useEffect(() => {
     // Check if the user is already logged in
     localStorage.removeItem('token');
-    localStorage.removeItem('responses');
+    /* localStorage.removeItem('responses'); */
     axios.defaults.headers.common['Authorization'] = undefined;
   }, []);
 
-  // function to handle login
+  // handle login
   const handleLogin = async () => {
     console.log(`Logging in with username: ${username} and password: ${password}`);
     try {
       // call the LoginUser function from userService.tsx
       const response = await LoginUser({ username, password });
       console.log('Server response data:', response.data);
-      // Check the success property of the response
+
+      // check the success property of the response
       if (!response.data.success) {
         throw new Error(response.data.error);
       }
-      // If the token is in the response body, you might access it like this
       const token = response.data.token;
       localStorage.setItem('token', token);
+
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      console.log('Token:', token);
       // navigate to the Profile page
       history.push('/Profile');
+
     } catch (error) {
       // log the error to the console
       console.error('Login failed:', error);
+      setErrorMessage('Invalid username or password');
       setShowAlert(true);
     }
   };
-  // function to navigate to the Create page
+
+  // navigate to the Create page
   const CreateButton = () => {
     console.log('Navigating to /Create');
     history.push('/Create');
   };
+
   // return element
   return (
     <IonPage>
@@ -95,21 +102,30 @@ const Login: React.FC = () => {
                   <IonInput type="password" value={password} onIonChange={(e) => setPassword(e.detail.value!)}></IonInput>
                 </IonItem>
               </div>
-              <IonButton expand="full" onClick={handleLogin} className="ion-margin-top login-button button-hover">
+              <IonButton expand="full" onClick={handleLogin} className="ion-margin-top login-button button-hover" fill="outline">
                 Login
               </IonButton>
+              {errorMessage && <p className="error">{errorMessage}</p>}
             </IonCol>
           </IonRow>
         </IonGrid>
-        <div>
-          <h3 className="create-text">Haven't got an account? Create your account below to begin!</h3>
-          <IonText color="medium" className="responsive-text text-spacing">
-            <p>By creating an account, you'll be able to access personalised health recommendations, track your health, and connect with other users. Join us today and start your health journey!</p>
-          </IonText>
-          <IonButton expand="full" onClick={CreateButton} className="ion-margin-top login-button button-hover">
-            Create/Register
-          </IonButton>
-        </div>
+        <IonGrid className="ion-text-center custom-grid">
+          <IonRow className="login-row">
+            <IonCol size="3" size-md="6" offsetMd="3">
+              <div>
+                <IonText color="medium" className="message1">
+                  <h3>Haven't got an account? Create your account below to begin!</h3>
+                </IonText>
+                <IonText color="medium" className="message2">
+                  <p>By creating an account, you'll be able to access personalised health recommendations and track your health. Join us today and start your health journey!</p>
+                </IonText>
+                <IonButton expand="full" onClick={CreateButton} className="ion-margin-top create-button button-hover" fill="outline">
+                  Create/Register
+                </IonButton>
+              </div>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}

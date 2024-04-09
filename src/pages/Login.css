@@ -9,39 +9,59 @@ h1 {
 
 .login-button {
     width: 40%;
+    min-width: 150px; /* Adjust this value as needed */
     align-items: center;
+    justify-content: center; /* Center the text horizontally */
     margin: 0 auto;
+    display: flex;
+}
 
+.create-button {
+    width: 40%;
+    min-width: 150px; /* Adjust this value as needed */
+    align-items: center;
+    justify-content: center; /* Center the text horizontally */
+    margin: 0 auto;
+    display: flex;
 }
 
 .login-row {
     display: flex;
     align-items: center;
-    height: 75vh; /* Set the container height to 100% of the viewport height */
+    justify-content: center; /* Add this line */
+    height: 75vh; 
+    min-height: 400px;
 }
 
-.create-text{
-    text-align: center;
+.custom-grid {
+    margin-top: -125px;
+}
+
+.message1 h3 {
+    text-align: center; /* Add this line */
+}
+
+.message2 p {
+    text-align: center; /* Add this line */
 }
 
 @media (max-width: 600px) {
-    .responsive-text {
+    .message1 h3, .message2 p {
       font-size: 14px;
     }
 }
   
 @media (min-width: 601px) and (max-width: 1024px) {
-    .responsive-text {
+    .message1 h3, .message2 p {
       font-size: 18px;
     }
 }
   
 @media (min-width: 1025px) {
-    .responsive-text {
+    .message1 h3, .message2 p {
       font-size: 22px;
     }
 }
-
 
 .IonItem {
     padding: 10px;
@@ -61,4 +81,8 @@ h1 {
 
 .IonText {
     margin-bottom: 20px;
+}
+
+.error {
+    color: red;
 }
