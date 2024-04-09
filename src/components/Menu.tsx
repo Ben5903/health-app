@@ -44,7 +44,7 @@ interface AppPage {
   title: string;
 }
 
-// Pages to be displayed in the menu
+// pages to be displayed in the menu
 const appPages: AppPage[] = [
   {
     title: 'Profile',
@@ -59,8 +59,8 @@ const appPages: AppPage[] = [
     mdIcon: paperPlaneSharp
   },
   {
-    title: 'Questionaire',
-    url: '/Questionaire',
+    title: 'Questionnaire',
+    url: '/Questionnaire',
     iosIcon: help,
     mdIcon: helpCircle
   },

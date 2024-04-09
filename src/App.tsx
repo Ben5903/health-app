@@ -6,7 +6,7 @@ import Menu from './components/Menu';
 import Login from './pages/Login';
 import Profile from "./pages/Profile";
 import Create from "./pages/Create";
-import Questionaire from "./pages/Questionaire";
+import Questionnaire from './pages/Questionnaire';
 import Track from './pages/Track';
 import Suggestions from './pages/Suggestions';
 import Predicaments from './pages/Predicaments';
@@ -24,6 +24,7 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 import './theme/variables.css';
+
 
 setupIonicReact();
 
@@ -51,7 +52,7 @@ const App: React.FC = () => {
                   <Route path="/Suggestions" component={Suggestions} exact/>
                   <Route path="/Predicaments" component={Predicaments} exact/>
                   <Route path="/Track" component={Track} exact/>
-                  <Route path="/Questionaire" component={Questionaire} exact />
+                  <Route path="/Questionnaire" component={Questionnaire} exact />
                   <Route path="/Login" component={Login} exact />
                   <Route path="/Profile" component={Profile} exact />
                   <Route path="/Settings" component={Settings} exact />

@@ -92,8 +92,8 @@ const Create: React.FC = () => {
         message={errorMessage}
         duration={2000}
     />
-    <IonText color="medium">
-        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Welcome to our community!</h2>
+    <IonText color="medium" className='register-message'>
+        <h2>Welcome to our community!</h2>
         <p>Please fill in the form below to create your profile.</p>
     </IonText>
     <IonItem className="input-field" lines="full" style={{ marginTop: '20px' }}>
@@ -124,7 +124,7 @@ const Create: React.FC = () => {
           <IonButton fill="clear" slot="end" onClick={() => setShowPassword(!showPassword)}>{showPassword ? "Hide" : "Show"}</IonButton>
         </IonItem>
 
-        <IonButton expand="full" onClick={registerUser} className="register-button">Register</IonButton>
+        <IonButton expand="full" onClick={registerUser} className="register-button" fill='outline'>Register</IonButton>
       </IonContent>
     </IonPage>
   );
