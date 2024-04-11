@@ -4,8 +4,6 @@ import {
   IonPage,
   IonInput,
   IonButton,
-  IonLabel,
-  IonItem,
   IonGrid,
   IonRow,
   IonCol,
@@ -14,40 +12,64 @@ import {
   IonMenuButton,
   IonTitle,
   IonText,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonSpinner,
+  IonAvatar,
 } from '@ionic/react';
 import './Profile.css';
 import { GetUserProfile } from '../components/userService';
+import { useHistory } from 'react-router-dom';
 
 const Profile: React.FC = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Declare the loading state variable here
+  const [user, setUser] = useState<object | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const token = localStorage.getItem('token'); 
-        if (!token) {
-          throw new Error('No token found');
+        const token = localStorage.getItem('token');
+        if (token) {
+          const userProfile = await GetUserProfile(token);
+          setUser(userProfile);
         }
-    
-        const userProfile = await GetUserProfile(token);
-        setUser(userProfile);
-        console.log('User profile:', userProfile); // Log the user profile to the console
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch user profile:', error);
       }
     };
 
-  fetchUserProfile();
-}, []);
+    fetchUserProfile();
+  }, []);
+
+  
 
   const handleEditProfile = () => {
-    console.log('Edit Profile Clicked');
+    setEditing(true);
+  };
+
+  const handleSaveChanges = () => {
+    console.log(user);
+    setEditing(false);
+  };
+
+  const handleChange = (field: string, value: string) => {
+    if (user && typeof user === 'object') {
+      setUser({ ...user, [field]: value });
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    history.push('/login');
   };
 
   if (loading) {
-    return <div>Loading...</div>;  // show a loading message while the user profile is being fetched
+    return <IonSpinner name="crescent" />;
   }
 
   return (
@@ -62,8 +84,11 @@ const Profile: React.FC = () => {
         <IonGrid>
           <IonRow>
             <IonCol>
+              <IonAvatar>
+                <img src="https://via.placeholder.com/150" alt="Profile" />
+              </IonAvatar>
               <IonText color="medium">
-                <h2>Welcome, {(user as any) ? (user as any).firstname : ''}!</h2>
+                <h2>Welcome, User!</h2>
                 <p>We're glad to have you here. Here's your profile information:</p>
               </IonText>
             </IonCol>
@@ -71,16 +96,33 @@ const Profile: React.FC = () => {
           {['firstname', 'surname', 'username', 'email', 'phone_number'].map((field) => (
             <IonRow key={field}>
               <IonCol>
-                <IonItem>
-                  <IonLabel>{field.charAt(0).toUpperCase() + field.slice(1)}: </IonLabel>
-                  <IonInput value={(user as any)[field]} readonly />
-                </IonItem>
+                <IonCard>
+                  <IonCardHeader>
+                    <IonCardTitle>{field.charAt(0).toUpperCase() + field.slice(1)}</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent>
+                    {editing ? (
+                      <IonInput value={user && (user as any)[field]} onIonChange={e => handleChange(field, e.detail.value!)}></IonInput>
+                    ) : (
+                      user ? (user as any)[field] || 'Sample Text' : 'Loading...'
+                    )}
+                  </IonCardContent>
+                </IonCard>
               </IonCol>
             </IonRow>
           ))}
         </IonGrid>
-        <IonButton className='edit' expand="full" onClick={handleEditProfile}>
-          Edit Profile
+        {editing ? (
+          <IonButton className='profile-button' expand="full" onClick={handleSaveChanges} fill='outline'>
+            Save Changes
+          </IonButton>
+        ) : (
+          <IonButton className='profile-button' expand="full" onClick={handleEditProfile} fill='outline'>
+            Edit Profile
+          </IonButton>
+        )}
+        <IonButton className='profile-button' color="danger" expand="full" onClick={handleLogout} fill='outline'>
+          Logout
         </IonButton>
       </IonContent>
     </IonPage>
