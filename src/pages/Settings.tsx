@@ -1,21 +1,18 @@
 import React, { useState, useContext } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonToggle, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonToggle, IonSelect, IonSelectOption, IonButtons, IonMenuButton } from '@ionic/react';
 import ThemeContext from '../contexts/ThemeContext';
 
-// Settings page
+// settings page
 const Settings: React.FC = () => {
     const [notificationsEnabled, setNotificationsEnabled] = useState(true);
     const { theme, setTheme, colorPreset, setColorPreset } = useContext(ThemeContext);
-    // Add a state variable for the notificationsEnabled state
-    const handleToggle = () => {
-      setNotificationsEnabled(!notificationsEnabled);
-    };
-    // Add a function to handle the theme select event
-    const handleThemeSelect = (event: CustomEvent) => {
+
+    // handle the theme select event
+    const ThemeSelect = (event: CustomEvent) => {
       setTheme(event.detail.value);
     };
-    // Add a function to handle the color preset select event
-    const handleColorPresetSelect = (event: CustomEvent) => {
+    // handle the color preset select event
+    const ColorPresetSelect = (event: CustomEvent) => {
       setColorPreset(event.detail.value);
     };
   
@@ -23,25 +20,24 @@ const Settings: React.FC = () => {
       <IonPage>
         <IonHeader>
           <IonToolbar>
+            <IonButtons slot="start">
+              <IonMenuButton></IonMenuButton>
+            </IonButtons>
             <IonTitle>Settings</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
           <IonList>
             <IonItem>
-              <IonLabel>Notifications</IonLabel>
-              <IonToggle checked={notificationsEnabled} onIonChange={handleToggle} />
-            </IonItem>
-            <IonItem>
               <IonLabel>Theme</IonLabel>
-              <IonSelect value={theme} placeholder="Select Theme" onIonChange={handleThemeSelect}>
+              <IonSelect value={theme} placeholder="Select Theme" onIonChange={ThemeSelect}>
                 <IonSelectOption value="light">Light</IonSelectOption>
                 <IonSelectOption value="dark">Dark</IonSelectOption>
               </IonSelect>
             </IonItem>
             <IonItem>
               <IonLabel>Color Preset</IonLabel>
-              <IonSelect value={colorPreset} placeholder="Select Color Preset" onIonChange={handleColorPresetSelect}>
+              <IonSelect value={colorPreset} placeholder="Select Color Preset" onIonChange={ColorPresetSelect}>
                 <IonSelectOption value="preset1">Blue</IonSelectOption>
                 <IonSelectOption value="preset2">Pink</IonSelectOption>
                 <IonSelectOption value="preset3">Green</IonSelectOption>
