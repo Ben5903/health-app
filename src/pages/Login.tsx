@@ -41,24 +41,20 @@ const Login: React.FC = () => {
 
   // handle login
   const handleLogin = async () => {
-    console.log(`Logging in with username: ${username} and password: ${password}`);
+    console.log(`Logging in with username ${username} and password: ${password}`);
     try {
       // call the LoginUser function from userService.tsx
       const response = await LoginUser({ username, password });
-      console.log('Server response data:', response.data);
-
-      // check the success property of the response
-      if (!response.data.success) {
-        throw new Error(response.data.error);
+      console.log('Server response:', response);
+  
+      // check if response and response.data exist
+      if (!response || !response.success) {
+        throw new Error("Unexpected server response");
       }
-      const token = response.data.token;
-      localStorage.setItem('token', token);
-
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      console.log('Token:', token);
+  
       // navigate to the Profile page
       history.push('/Profile');
-
+  
     } catch (error) {
       // log the error to the console
       console.error('Login failed:', error);

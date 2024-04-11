@@ -7,7 +7,7 @@ const BASE_URL = 'http://127.0.0.1:8000/';
 const AddUser = async (userData: any) => {
   try {
     // request to the /user/add/ endpoint with the user data
-    const response = await axios.post('http://127.0.0.1:8000/user/add/', userData);
+    const response = await axios.post(`${BASE_URL}/user/add/`, userData);
     // check the success property of the response
     return response.data;
   } catch (error) {
@@ -19,7 +19,7 @@ const AddUser = async (userData: any) => {
 // get user profile
 const GetUserProfile = async (token: string) => {
   // response to the /profile endpoint with the token in the Authorization header
-  const response = await fetch('${BASE_URL}/user/userprofiles', {
+  const response = await fetch(`${BASE_URL}/user/userprofiles/`, {
     headers: {
       'Authorization': `Bearer ${token}`
     }
@@ -38,7 +38,7 @@ const LoginUser = async (userData: any) => {
   try {
     console.log('Logging in with user data:', userData); 
 
-    //  request to the /user/login/ endpoint without including the token
+    //  request to the /user/login/ endpoint with the user data
     const response = await axios.post(`${BASE_URL}/user/login/`, userData);
 
     console.log('Server response:', response); // Log the server response
