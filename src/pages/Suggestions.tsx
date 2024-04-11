@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   IonButtons,
   IonContent,
@@ -7,51 +7,41 @@ import {
   IonTitle,
   IonToolbar,
   IonCard,
-  IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
   IonCol,
   IonRow,
   IonGrid,
-  IonText
+  IonText,
+  IonCardContent
 } from '@ionic/react';
 import './Suggestions.css';
+import Track from './Track';
 
+interface SuggestionsProps {
+  questionnaireData: {
+    question: string;
+    answer: string | null;
+  }[];
+}
 
-
-const Suggestions: React.FC = () => {
-  const [currentTemperature, setCurrentTemperature] = useState(0);
-  const [currentHeartRate, setCurrentHeartRate] = useState(0);
-  const [currentBloodPressure, setCurrentBloodPressure] = useState({ systolic: 0, diastolic: 0 });
-
+const Suggestions: React.FC<SuggestionsProps> = ({ questionnaireData }) => {
   const generateInsights = () => {
     let insights = [];
-
-    if (currentTemperature !== null) {
-      if (currentTemperature > 37.5) {
-        insights.push('Your temperature is above normal. You might have a fever.');
-      } else if (currentTemperature < 36.5) {
-        insights.push('Your temperature is below normal. You might be feeling cold.');
-      }
+  
+    if (questionnaireData) {
+      questionnaireData.forEach(question => {
+        if (question.answer === null) {
+          insights.push(`You haven't answered the question: "${question.question}" yet.`);
+        } else {
+          insights.push(`Your answer to "${question.question}" is: "${question.answer}".`);
+        }
+      });
+    } else {
+      insights.push('No questionnaire data available.');
     }
-
-    if (currentHeartRate !== null) {
-      if (currentHeartRate > 100) {
-        insights.push('Your heart rate is above normal. You might be experiencing stress or anxiety.');
-      } else if (currentHeartRate < 60) {
-        insights.push('Your heart rate is below normal. You might be very relaxed or have a heart condition.');
-      }
-    }
-
-    if (currentBloodPressure !== null) {
-      if (currentBloodPressure.systolic > 140 || currentBloodPressure.diastolic > 90) {
-        insights.push('Your blood pressure is high. You might have hypertension.');
-      } else if (currentBloodPressure.systolic < 90 || currentBloodPressure.diastolic < 60) {
-        insights.push('Your blood pressure is low. You might have hypotension.');
-      }
-    }
-
+  
     return insights;
   };
 
@@ -64,29 +54,59 @@ const Suggestions: React.FC = () => {
           </IonButtons>
           <IonTitle>View Your Suggestions</IonTitle>
         </IonToolbar>
-
         <IonGrid class="ion-no-padding ion-align-items-center ion-justify-content-center">
-          <IonRow>
-            <IonCol size="6">
+          <IonRow class="grid-row">
+            <IonCol size="10">
               <IonCard className='box1'>
                 <IonCardHeader>
-                  <IonCardTitle>Health considerations</IonCardTitle>
-                  <IonCardSubtitle>Some key tips</IonCardSubtitle>
+                  <IonCardTitle>Questionnaire Insights</IonCardTitle>
                 </IonCardHeader>
-                <IonText color="medium">
-                  <h2>Health Insights</h2>
+                <IonCardContent>
                   {generateInsights().map((insight, index) => (
                     <p key={index}>{insight}</p>
                   ))}
-                </IonText>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+            <IonCol size="10">
+              <IonCard className='box2'>
+                <IonCardHeader>
+                  <IonCardTitle>Dietary Suggestions</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <p>Consider incorporating more fruits and vegetables into your diet for better nutrition.</p>
+                  <p>Try to reduce your intake of processed foods and sugary snacks.</p>
+                </IonCardContent>
               </IonCard>
             </IonCol>
           </IonRow>
-          {/* Other components */}
+          <IonRow class="grid-row">
+            <IonCol size="10">
+              <IonCard className='box3'>
+                <IonCardHeader>
+                  <IonCardTitle>Exercise Tips</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <p>Find physical activities you enjoy, like walking, swimming, or dancing, and aim to do them regularly.</p>
+                  <p>Set achievable fitness goals to help you stay motivated and track your progress.</p>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+            <IonCol size="10">
+              <IonCard className='box4'>
+                <IonCardHeader>
+                  <IonCardTitle>General Health Advice</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <p>Ensure you're getting enough sleep each night to support overall health and well-being.</p>
+                  <p>Stay hydrated by drinking plenty of water throughout the day.</p>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+          </IonRow>
         </IonGrid>
       </IonContent>
     </IonPage>
   );
 };
-
 export default Suggestions;

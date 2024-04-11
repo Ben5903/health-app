@@ -3,10 +3,12 @@ import axios from 'axios';
 
 const BASE_URL = 'http://127.0.0.1:8000/';
 
-
+// add user
 const AddUser = async (userData: any) => {
   try {
+    // request to the /user/add/ endpoint with the user data
     const response = await axios.post('http://127.0.0.1:8000/user/add/', userData);
+    // check the success property of the response
     return response.data;
   } catch (error) {
     console.error(error);
@@ -14,8 +16,10 @@ const AddUser = async (userData: any) => {
   }
 };
 
+// get user profile
 const GetUserProfile = async (token: string) => {
-  const response = await fetch('https://your-api-endpoint.com/profile', {
+  // response to the /profile endpoint with the token in the Authorization header
+  const response = await fetch('${BASE_URL}/user/userprofiles', {
     headers: {
       'Authorization': `Bearer ${token}`
     }
@@ -29,21 +33,23 @@ const GetUserProfile = async (token: string) => {
   return userProfile;
 };
 
+// login user
 const LoginUser = async (userData: any) => {
   try {
-    console.log('Logging in with user data:', userData); // Log the user data
+    console.log('Logging in with user data:', userData); 
 
-    // Post request to the /user/login/ endpoint without including the token
+    //  request to the /user/login/ endpoint without including the token
     const response = await axios.post(`${BASE_URL}/user/login/`, userData);
 
     console.log('Server response:', response); // Log the server response
 
-    // Check the success property of the response
+    // check  success property of the response
     if (!response.data.success) {
-      console.log('Server response data:', response.data); // Log the response data
+      console.log('Server response data:', response.data);
       throw new Error(response.data.error);
     }
-    return response.data; // Return the entire response data
+    // return the response data
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
