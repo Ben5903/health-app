@@ -30,8 +30,11 @@ const Track: React.FC = () => {
   const [heartRateHistory, setHeartRateHistory] = useState<{ date: Date; value: number }[]>([]);
   const [bloodPressureHistory, setBloodPressureHistory] = useState<{ date: Date; systolic: number; diastolic: number }[]>([]);
 
+
   // useEffect hook to run code on component load
   useEffect(() => {
+    
+
     // declare intervalId variable to store the interval ID
     let intervalId: NodeJS.Timeout | null = null;
     // function to start tracking
@@ -40,7 +43,7 @@ const Track: React.FC = () => {
         if (isTemperatureTracking) fetchTemperature();
         if (isHeartRateTracking) fetchHeartRate();
         if (isBloodPressureTracking) fetchBloodPressure();
-      }, 1500); 
+      }, 5000);
     };
     // function to stop tracking
     const stopTracking = () => {
@@ -50,15 +53,15 @@ const Track: React.FC = () => {
       }
     };
 
-    // function to fetch temperature data
+    // fetch temperature data function
     const fetchTemperature = async () => {
       try {
         // fetch temperature data from the server
-        const response = await fetch('http://192.168.1.25:5000/api/trackTemperature');
+        const response = await fetch('http://192.168.1.29:5000/api/trackTemperature');
         if (response.ok) {
           // parse the response data
           const data = await response.json();
-          
+
           // update the temperature data state variable
           setTemperatureData(prevData => [...prevData, { x: temperatureData.length, y: data.temperature }]);
           setCurrentTemperature(data.temperature);
@@ -71,11 +74,11 @@ const Track: React.FC = () => {
       }
     };
 
-    // function to fetch heart rate data
+    // fetch heart rate data function
     const fetchHeartRate = async () => {
       try {
         // fetch heart rate data from  server
-        const response = await fetch('http://192.168.1.25:5000/api/trackHeartRate');
+        const response = await fetch('http://192.168.1.29:5000/api/trackHeartRate');
         if (response.ok) {
           // parse the response data
           const data = await response.json();
@@ -94,7 +97,7 @@ const Track: React.FC = () => {
     const fetchBloodPressure = async () => {
       try {
         // fetch blood pressure data from server
-        const response = await fetch('http://192.168.1.25:5000/api/trackBloodPressure');
+        const response = await fetch('http://192.168.1.29:5000/api/trackBloodPressure');
         if (response.ok) {
           const data = await response.json();
           setBloodPressureData(prevData => [...prevData, { x: bloodPressureData.length, y: data.systolic }]);
@@ -115,13 +118,12 @@ const Track: React.FC = () => {
       // stop tracking if none of the tracking variables are true
       stopTracking();
 
-      // clear temperature data when tracking is stopped
-      setTemperatureData([]); 
-      
-      // clear heart rate data when tracking is stopped
-      setHeartRateData([]); 
-      // clear blood pressure data when tracking is stopped
-      setBloodPressureData([]); 
+
+
+      // clear data when tracking is stopped
+      setTemperatureData([]);
+      setHeartRateData([]);
+      setBloodPressureData([]);
 
       // clear current temperature, heart rate, and blood pressure when tracking is stopped
       setCurrentTemperature(null);
@@ -156,7 +158,7 @@ const Track: React.FC = () => {
           <IonTitle>Track your health here!</IonTitle>
         </IonToolbar>
 
-        <IonText color="medium">
+        <IonText color="medium" className="track-message">
           <h2>Welcome to your health tracking dashboard!</h2>
           <p>Here you can track your temperature, heart rate, and blood pressure over time. Click the buttons below to start or stop tracking each metric.</p>
         </IonText>
@@ -170,15 +172,31 @@ const Track: React.FC = () => {
         />
 
         <div className="tracking-buttons">
-          <IonButton onClick={toggleTemperatureTracking}>
+          <IonButton onClick={toggleTemperatureTracking} fill='outline'>
             {isTemperatureTracking ? 'Stop Temperature Tracking' : 'Start Temperature Tracking'}
           </IonButton>
           {temperatureData.length > 0 && (
             <div>
               <VictoryChart width={800} height={600} scale={{ x: 'linear', y: 'linear' }}>
-                <VictoryAxis />
                 {/* @ts-ignore */}
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  label='Time'
+                  style={{
+                    axis: { stroke: "#888" },
+                    axisLabel: { fontSize: 35, padding: 10 },
+                    ticks: { stroke: "#888" },
+                    tickLabels: { fill: "#888", fontSize: 15 }
+                  }} />
+                {/* @ts-ignore */}
+                <VictoryAxis
+                  dependentAxis
+                  label='Temperature (°C)'
+                  style={{
+                    axis: { stroke: "#888" },
+                    axisLabel: { fontSize: 35, padding: 10 },
+                    ticks: { stroke: "#888" },
+                    tickLabels: { fill: "#888", fontSize: 15 }
+                  }} />
                 <VictoryLine data={temperatureData} />
               </VictoryChart>
               {currentTemperature !== null && (
@@ -187,15 +205,32 @@ const Track: React.FC = () => {
             </div>
           )}
 
-          <IonButton onClick={toggleHeartRateTracking}>
+
+          <IonButton onClick={toggleHeartRateTracking} fill='outline'>
             {isHeartRateTracking ? 'Stop Heart Rate Tracking' : 'Start Heart Rate Tracking'}
           </IonButton>
           {heartRateData.length > 0 && (
             <div>
               <VictoryChart width={800} height={600} scale={{ x: 'linear', y: 'linear' }}>
-                <VictoryAxis />
                 {/* @ts-ignore */}
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  label='Time'
+                  style={{
+                    axis: { stroke: "#888" },
+                    axisLabel: { fontSize: 35, padding: 10 },
+                    ticks: { stroke: "#888" },
+                    tickLabels: { fill: "#888", fontSize: 15 }
+                  }} />
+                {/* @ts-ignore */}
+                <VictoryAxis
+                  dependentAxis
+                  label='Heart Rate (bpm)'
+                  style={{
+                    axis: { stroke: "#888" },
+                    axisLabel: { fontSize: 35, padding: 10 },
+                    ticks: { stroke: "#888" },
+                    tickLabels: { fill: "#888", fontSize: 15 }
+                  }} />
                 <VictoryLine data={heartRateData} />
               </VictoryChart>
               {currentHeartRate !== null && (
@@ -204,15 +239,31 @@ const Track: React.FC = () => {
             </div>
           )}
 
-          <IonButton onClick={toggleBloodPressureTracking}>
+          <IonButton onClick={toggleBloodPressureTracking} fill='outline'>
             {isBloodPressureTracking ? 'Stop Blood Pressure Tracking' : 'Start Blood Pressure Tracking'}
           </IonButton>
           {bloodPressureData.length > 0 && (
             <div>
               <VictoryChart width={800} height={600} scale={{ x: 'linear', y: 'linear' }}>
-                <VictoryAxis />
                 {/* @ts-ignore */}
-                <VictoryAxis dependentAxis />
+                <VictoryAxis
+                  label='Time'
+                  style={{
+                    axis: { stroke: "#888" },
+                    axisLabel: { fontSize: 35, padding: 10 },
+                    ticks: { stroke: "#888" },
+                    tickLabels: { fill: "#888", fontSize: 15 }
+                  }} />
+                {/* @ts-ignore */}
+                <VictoryAxis
+                  dependentAxis
+                  label='Blood Pressure (mmHg)'
+                  style={{
+                    axis: { stroke: "#888" },
+                    axisLabel: { fontSize: 35, padding: 10 },
+                    ticks: { stroke: "#888" },
+                    tickLabels: { fill: "#888", fontSize: 15 }
+                  }} />
                 <VictoryLine data={bloodPressureData} />
               </VictoryChart>
               {currentBloodPressure !== null && (
@@ -229,15 +280,15 @@ const Track: React.FC = () => {
               <table style={{ width: '100%', textAlign: 'center', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ backgroundColor: '#f2f2f2' }}>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Date</th>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Temperature</th>
+                    <th style={{ border: '2px solid #ddd', padding: '8px' }}>Date</th>
+                    <th style={{ border: '2px solid #ddd', padding: '8px' }}>Temperature</th>
                   </tr>
                 </thead>
                 <tbody>
                   {temperatureHistory.map((entry, index) => (
                     <tr key={index} style={{ borderBottom: '1px solid #ddd' }}>
-                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{entry.date.toLocaleString()}</td>
-                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{entry.value}</td>
+                      <td style={{ border: '2px solid #ddd', padding: '8px' }}>{entry.date.toLocaleString()}</td>
+                      <td style={{ border: '2px solid #ddd', padding: '8px' }}>{entry.value}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -252,15 +303,15 @@ const Track: React.FC = () => {
               <table style={{ width: '100%', textAlign: 'center', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ backgroundColor: '#f2f2f2' }}>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Date</th>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Heart Rate</th>
+                    <th style={{ border: '2px solid #ddd', padding: '8px' }}>Date</th>
+                    <th style={{ border: '2px solid #ddd', padding: '8px' }}>Heart Rate</th>
                   </tr>
                 </thead>
                 <tbody>
                   {heartRateHistory.map((entry, index) => (
                     <tr key={index} style={{ borderBottom: '1px solid #ddd' }}>
-                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{entry.date.toLocaleString()}</td>
-                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{entry.value}</td>
+                      <td style={{ border: '2px solid #ddd', padding: '8px' }}>{entry.date.toLocaleString()}</td>
+                      <td style={{ border: '2px solid #ddd', padding: '8px' }}>{entry.value}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -276,17 +327,17 @@ const Track: React.FC = () => {
               <table style={{ width: '100%', textAlign: 'center', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ backgroundColor: '#f2f2f2' }}>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Date</th>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Systolic</th>
-                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Diastolic</th>
+                    <th style={{ border: '2px solid #ddd', padding: '8px' }}>Date</th>
+                    <th style={{ border: '2px solid #ddd', padding: '8px' }}>Systolic</th>
+                    <th style={{ border: '2px solid #ddd', padding: '8px' }}>Diastolic</th>
                   </tr>
                 </thead>
                 <tbody>
                   {bloodPressureHistory.map((entry, index) => (
                     <tr key={index} style={{ borderBottom: '1px solid #ddd' }}>
-                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{entry.date.toLocaleString()}</td>
-                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{entry.systolic}</td>
-                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{entry.diastolic}</td>
+                      <td style={{ border: '2px solid #ddd', padding: '8px' }}>{entry.date.toLocaleString()}</td>
+                      <td style={{ border: '2px solid #ddd', padding: '8px' }}>{entry.systolic}</td>
+                      <td style={{ border: '2px solid #ddd', padding: '8px' }}>{entry.diastolic}</td>
                     </tr>
                   ))}
                 </tbody>
