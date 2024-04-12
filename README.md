@@ -1,15 +1,15 @@
-# Health Management System
+# Health Management Assistant
 
 ## Final Year Project
 
-The Health Monitoring System is a comprehensive mobile application designed to empower users to track and manage their health data effectively. 
+The Health Monitoring Assistant is a comprehensive mobile application designed to empower users to track and manage their health data effectively. 
 Equipped with a user-friendly interface, the app offers a range of features to support users in their health journey. 
 
 Key features include secure data storage for user information, a questaionnaire for the user to interact with, 
 a suggestions page for users to empower their insights on health and a tracking page to track the metrics such as body temperature, 
 heart rate and blood pressure. The system prioritises user privacy and data security, with encryption measures in place to safeguard sensitive information.
 
-With the Health Monitoring System, 
+With the Health Monitoring Assistant, 
 users can take control of their health and make informed decisions to optimise their well-being.
 
 ### Upon Running the Project for the first time:
