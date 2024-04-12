@@ -28,14 +28,14 @@ const Questionnaire: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([
     {
       id: 1,
-      question: 'What is your gender',
+      question: 'What is your gender?',
       options: ['Male ', 'Female ', 'Other '],
       response: null,
     },
 
     {
       id: 2,
-      question: 'What is your age range',
+      question: 'What is your age range?',
       options: ['Under 18 ', '18-24 ', '25-34 ', '35-44 ', '45-54 ', '55-64 ', '65-74 ', '75-84 ', 'Over 85 '],
       response: null,
     },
